@@ -59,6 +59,7 @@ module std.format;
 
 import core.vararg;
 import std.exception;
+import std.internal.attributes : betterC;
 import std.meta;
 import std.range.primitives;
 import std.traits;
@@ -6546,6 +6547,12 @@ if (isSomeString!(typeof(fmt)))
     static assert(!__traits(compiles, {s = format!"%l"();}));     // missing arg
     static assert(!__traits(compiles, {s = format!""(404);}));    // surplus arg
     static assert(!__traits(compiles, {s = format!"%d"(4.03);})); // incompatible arg
+}
+
+@safe @betterC unittest
+{
+    enum s = "%s".format("foo");
+    assert(s == "foo");
 }
 
 // called during compilation to guess the length of the
